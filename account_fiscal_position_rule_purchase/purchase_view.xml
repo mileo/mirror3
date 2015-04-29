@@ -8,14 +8,14 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
-                <field name="partner_id" position="attributes" >
-                            <attribute name="on_change">onchange_partner_id(partner_id, company_id, context)</attribute>
-                </field>
+  				<field name="partner_id" position="attributes">
+					<attribute name="context">{'company_id': company_id}</attribute>
+				</field>
                 <field name="dest_address_id" position="attributes" >
-                           <attribute name="on_change">onchange_dest_address_id(partner_id, dest_address_id, company_id, context)</attribute>
+                           <attribute name="on_change">onchange_dest_address_id(partner_id, dest_address_id, company_id)</attribute>
                 </field>
                 <field name="company_id" position="attributes" >
-                           <attribute name="on_change">onchange_company_id(partner_id, dest_address_id, company_id, context)</attribute>
+                           <attribute name="on_change">onchange_company_id(partner_id, dest_address_id, company_id)</attribute>
                 </field>
             </field>
         </record>

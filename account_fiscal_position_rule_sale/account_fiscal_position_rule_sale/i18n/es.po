@@ -1,11 +1,11 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
-#    * account_fiscal_position_rule
+#	* account_fiscal_position_rule_sale
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 5.0.7\n"
-"Report-Msgid-Bugs-To: support@openerp.com\n"
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-04-11 11:21+0000\n"
 "PO-Revision-Date: 2014-05-28 12:36+0000\n"
 "Last-Translator: Alberto Garcia (Factor Libre) "
@@ -20,4 +20,4 @@ msgstr ""
 #. module: account_fiscal_position_rule_sale
 #: model:ir.model,name:account_fiscal_position_rule_sale.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Pedidos de venta"
