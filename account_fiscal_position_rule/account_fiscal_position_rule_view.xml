@@ -101,12 +101,15 @@
       <field name="model">account.fiscal.position.rule</field>
       <field name="arch" type="xml">
         <form string="Fiscal Position Rule">
-        	<group string="General">
-    			<group>	                    
+        	<group string="General" col="6">
+    			<group colspan="2">	                    
             		<field name="name" select="1"/>
 	            </group>
-	            <group>
+	            <group colspan="2">
 	            	<field name="description" />
+	            </group>
+	             <group colspan="2">
+	            	<field name="company_id" />
 	            </group>
 	         </group>	                    	
 	        <group col="6">
