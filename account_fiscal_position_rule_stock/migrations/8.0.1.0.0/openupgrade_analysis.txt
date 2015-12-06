@@ -1,0 +1,4 @@
+---Fields in module 'account_fiscal_position_rule_stock'---
+---XML records in module 'account_fiscal_position_rule_stock'---
+NEW ir.ui.view: account_fiscal_position_rule_stock.account_fiscal_position_rule_stock_view_picking_form
+DEL ir.ui.view: account_fiscal_position_rule_stock.account_fiscal_position_rule_stock_view_picking_inherit_form

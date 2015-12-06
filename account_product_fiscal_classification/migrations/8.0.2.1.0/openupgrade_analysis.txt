@@ -1,0 +1,42 @@
+---Fields in module 'account_product_fiscal_classification'---
+account_product_fiscal_classification / account.product.fiscal.classification / active (boolean)              : NEW 
+account_product_fiscal_classification / account.product.fiscal.classification / code (char)                   : NEW 
+account_product_fiscal_classification / account.product.fiscal.classification / description (char)            : type is now 'text' ('char')
+account_product_fiscal_classification / account.product.fiscal.classification / purchase_base_tax_ids (many2many): was renamed to purchase_tax_ids [nothing to to]
+account_product_fiscal_classification / account.product.fiscal.classification / sale_base_tax_ids (many2many) : was renamed to sale_tax_ids [nothing to to]
+account_product_fiscal_classification / account.product.fiscal.classification.template / active (boolean)              : NEW 
+account_product_fiscal_classification / account.product.fiscal.classification.template / code (char)                   : NEW 
+account_product_fiscal_classification / account.product.fiscal.classification.template / description (char)            : type is now 'text' ('char')
+account_product_fiscal_classification / account.product.fiscal.classification.template / purchase_base_tax_ids (many2many): was renamed to purchase_tax_ids [nothing to to]
+account_product_fiscal_classification / account.product.fiscal.classification.template / sale_base_tax_ids (many2many) : was renamed to sale_tax_ids [nothing to to]
+account_product_fiscal_classification / product.template         / fiscal_classification_id (many2one): NEW relation: account.product.fiscal.classification
+account_product_fiscal_classification / product.template         / property_fiscal_classification (many2one): DEL relation: account.product.fiscal.classification
+---XML records in module 'account_product_fiscal_classification'---
+NEW ir.actions.act_window: account_product_fiscal_classification.action_account_product_fiscal_classification
+NEW ir.actions.act_window: account_product_fiscal_classification.action_account_product_fiscal_classification_template
+NEW ir.actions.act_window: account_product_fiscal_classification.action_template_list_by_fiscal_classification
+NEW ir.actions.act_window: account_product_fiscal_classification.action_wizard_change_fiscal_classification
+DEL ir.actions.act_window: account_product_fiscal_classification.product_fiscal_classifications_action
+DEL ir.actions.act_window: account_product_fiscal_classification.product_fiscal_classifications_template_action
+NEW ir.model.access: account_product_fiscal_classification.ir_model_access_account_product_fiscal_classification_manager
+NEW ir.model.access: account_product_fiscal_classification.ir_model_access_account_product_fiscal_classification_reader
+DEL ir.model.access: account_product_fiscal_classification.account_product_fiscal_classification
+DEL ir.model.access: account_product_fiscal_classification.account_product_fiscal_classification_template
+NEW ir.rule: account_product_fiscal_classification.ir_rule_tax_group
+NEW ir.ui.menu: account_product_fiscal_classification.menu_account_product_fiscal_classification
+NEW ir.ui.menu: account_product_fiscal_classification.menu_account_product_fiscal_classification_template
+DEL ir.ui.menu: account_product_fiscal_classification.menu_product_fiscal_classifications
+DEL ir.ui.menu: account_product_fiscal_classification.menu_product_fiscal_classifications_template
+NEW ir.ui.view: account_product_fiscal_classification.view_account_product_fiscal_classification_form
+NEW ir.ui.view: account_product_fiscal_classification.view_account_product_fiscal_classification_template_form
+NEW ir.ui.view: account_product_fiscal_classification.view_account_product_fiscal_classification_template_tree
+NEW ir.ui.view: account_product_fiscal_classification.view_account_product_fiscal_classification_tree
+NEW ir.ui.view: account_product_fiscal_classification.view_product_template_form
+NEW ir.ui.view: account_product_fiscal_classification.view_product_template_search
+NEW ir.ui.view: account_product_fiscal_classification.view_product_template_tree
+NEW ir.ui.view: account_product_fiscal_classification.view_wizard_change_fiscal_classification
+DEL ir.ui.view: account_product_fiscal_classification.fiscal_classification_normal_form_view_form
+DEL ir.ui.view: account_product_fiscal_classification.fiscal_classification_normal_form_view_tree
+DEL ir.ui.view: account_product_fiscal_classification.fiscal_classification_template_normal_form_view_form
+DEL ir.ui.view: account_product_fiscal_classification.fiscal_classification_template_normal_form_view_tree
+DEL ir.ui.view: account_product_fiscal_classification.product_fiscal_classification_product_normal_form_view
