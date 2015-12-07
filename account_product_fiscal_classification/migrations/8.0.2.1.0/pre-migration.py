@@ -38,9 +38,9 @@ column_renames = {
         # ('sale_base_tax_ids', 'sale_tax_ids')
     ],
     # TODO: this works?
-    'product_template': [
-        ('property_fiscal_classification', 'fiscal_classification_id'),
-    ],
+    # 'product_template': [
+    #     ('property_fiscal_classification', 'fiscal_classification_id'),
+    # ],
 }
 
 xmlid_renames = [
