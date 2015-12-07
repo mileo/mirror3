@@ -68,6 +68,36 @@ xmlid_renames = [
     #     'account_product_fiscal_classification.action_wizard_account_product_fiscal_classification'),
 ]
 
+def copy_properties(cr, pool):
+    """ Fields property_fiscal_classification moved to Many2one (fiscal_classification_id).
+
+    Write using the ORM so the fiscal_classification_id will be written on products.
+    """
+    template_obj = pool['product.template']
+    sql = ("SELECT id, %s FROM product_template" %
+           openupgrade.get_legacy_name('standard_price'))
+    cr.execute(sql)
+    logger.info(
+        "Creating product_template.standard_price properties"
+        " for %d products." % (cr.rowcount))
+    for template_id, std_price in cr.fetchall():
+        template_obj.write(cr, SUPERUSER_ID, [template_id],
+                           {'standard_price': std_price})
+    # make properties global
+    sql = ("""
+        UPDATE ir_property
+        SET company_id = null
+        WHERE res_id like 'product.template,%%'
+        AND name = 'standard_price'""")
+    openupgrade.logged_query(cr, sql)
+
+    # product.price.history entries have been generated with a value for
+    # today, we want a value for the past as well, write a bogus date to
+    # be sure that we have an historic value whenever we want
+    cr.execute("UPDATE product_price_history SET "
+               # calling a field 'datetime' is not really a good idea
+               "datetime = '1970-01-01 00:00:00+00'")
+
 @openupgrade.migrate()
 def migrate(cr, version):
     openupgrade.rename_columns(cr, column_renames)
