@@ -20,6 +20,7 @@
 
 import logging
 from openerp.openupgrade import openupgrade
+from openerp import pooler, SUPERUSER_ID
 
 
 logger = logging.getLogger('OpenUpgrade.account_product_fiscal_classification')
@@ -28,19 +29,11 @@ column_renames = {
     'account_product_fiscal_classification': [
         ('name', 'code'),
         ('description', 'name'),
-        # ('purchase_base_tax_ids', 'purchase_base_tax_ids'),
-        # ('sale_base_tax_ids', 'sale_tax_ids')
     ],
     'account_product_fiscal_classification_template': [
         ('name', 'code'),
         ('description', 'name'),
-        # ('purchase_base_tax_ids', 'purchase_base_tax_ids'),
-        # ('sale_base_tax_ids', 'sale_tax_ids')
     ],
-    # TODO: this works?
-    # 'product_template': [
-    #     ('property_fiscal_classification', 'fiscal_classification_id'),
-    # ],
 }
 
 xmlid_renames = [
@@ -58,15 +51,8 @@ xmlid_renames = [
         'account_product_fiscal_classification.action_template_list_by_fiscal_classification'),
     ('account_product_fiscal_classification.product_fiscal_classifications_action',
         'account_product_fiscal_classification.action_account_product_fiscal_classification'),
-    # ('account_product_fiscal_classification.',
-    #     'account_product_fiscal_classification.action_account_product_fiscal_classification_template'),
-    # ('account_product_fiscal_classification.',
-    #     'account_product_fiscal_classification.action_account_product_fiscal_classification'),
-    # ('account_product_fiscal_classification.',
-    #     'account_product_fiscal_classification.action_wizard_change_fiscal_classification'),
-    # ('account_product_fiscal_classification.',
-    #     'account_product_fiscal_classification.action_wizard_account_product_fiscal_classification'),
 ]
+
 
 def copy_properties(cr, pool):
     """ Fields property_fiscal_classification moved to Many2one (fiscal_classification_id).
@@ -74,31 +60,24 @@ def copy_properties(cr, pool):
     Write using the ORM so the fiscal_classification_id will be written on products.
     """
     template_obj = pool['product.template']
-    sql = ("SELECT id, %s FROM product_template" %
-           openupgrade.get_legacy_name('standard_price'))
+    sql = ("SELECT value_reference, res_id, company_id "
+           "FROM ir_property "
+           "WHERE name='property_fiscal_classification'")
     cr.execute(sql)
     logger.info(
-        "Creating product_template.standard_price properties"
+        "Converting property_fiscal_classification to fiscal_classification_id"
         " for %d products." % (cr.rowcount))
-    for template_id, std_price in cr.fetchall():
-        template_obj.write(cr, SUPERUSER_ID, [template_id],
-                           {'standard_price': std_price})
-    # make properties global
-    sql = ("""
-        UPDATE ir_property
-        SET company_id = null
-        WHERE res_id like 'product.template,%%'
-        AND name = 'standard_price'""")
-    openupgrade.logged_query(cr, sql)
+    for value_reference, res_id, company_id in cr.fetchall():
+        fiscal_classification_id = value_reference.split(',')[1]
+        template_id = res_id.split(',')[1]
+        template_obj.write(
+            cr, SUPERUSER_ID, [template_id],
+            {'fiscal_classification_id': fiscal_classification_id})
 
-    # product.price.history entries have been generated with a value for
-    # today, we want a value for the past as well, write a bogus date to
-    # be sure that we have an historic value whenever we want
-    cr.execute("UPDATE product_price_history SET "
-               # calling a field 'datetime' is not really a good idea
-               "datetime = '1970-01-01 00:00:00+00'")
 
 @openupgrade.migrate()
 def migrate(cr, version):
     openupgrade.rename_columns(cr, column_renames)
     openupgrade.rename_xmlids(cr, xmlid_renames)
+    pool = pooler.get_pool(cr.dbname)
+    copy_properties(cr, pool)
